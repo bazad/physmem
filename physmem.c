@@ -20,10 +20,10 @@
 /* Definitions from IOPCIDevice.h */
 
 enum {
-    kIOPCIConfigSpace           = 0,
-    kIOPCIIOSpace               = 1,
-    kIOPCI32BitMemorySpace      = 2,
-    kIOPCI64BitMemorySpace      = 3
+	kIOPCIConfigSpace      = 0,
+	kIOPCIIOSpace          = 1,
+	kIOPCI32BitMemorySpace = 2,
+	kIOPCI64BitMemorySpace = 3
 };
 
 /* Definitions from IOPCIPrivate.h */
@@ -91,21 +91,9 @@ void physmem_init() {
 	if (service == IO_OBJECT_NULL) {
 		FAIL("could not find any services matching %s", target_service);
 	}
-	// Set the IOUserClientClass property to IOPCIDiagnosticsClient.
-	CFStringRef key = CFStringCreateWithCStringNoCopy(kCFAllocatorDefault,
-			"IOUserClientClass",
-			kCFStringEncodingUTF8,
-			kCFAllocatorNull);
-	CFStringRef value = CFStringCreateWithCStringNoCopy(kCFAllocatorDefault,
-			"IOPCIDiagnosticsClient",
-			kCFStringEncodingUTF8,
-			kCFAllocatorNull);
-	if (key == NULL || value == NULL) {
-		FAIL("string allocation failed");
-	}
-	kern_return_t kr = IORegistryEntrySetCFProperty(service, key, value);
-	CFRelease(key);
-	CFRelease(value);
+	kern_return_t kr = IORegistryEntrySetCFProperty(service,
+			CFSTR("IOUserClientClass"),
+			CFSTR("IOPCIDiagnosticsClient"));
 	if (kr != KERN_SUCCESS) {
 		FAIL("could not set property: %x", kr);
 	}

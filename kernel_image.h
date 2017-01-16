@@ -16,7 +16,6 @@
  *
  * Description:
  * 	Initialize the kernel image.
- *
  */
 void kernel_init(void);
 
